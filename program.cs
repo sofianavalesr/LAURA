@@ -1,18 +1,23 @@
 using System;
 using System.Collections.Generic;
 
-
 class Program
 {
     static void Main(string[] args)
     {
         List<Cliente> clientes = new List<Cliente>();
-        List<Producto> productos = new List<Producto>();
+        Inventario inventario = new Inventario();
         List<Factura> facturas = new List<Factura>();
-        // Agregar productos de ejemplo
-        productos.Add(new Producto { Id = 1, Nombre = "Pizza", Precio = 10.00m, Cantidad = 50 });
-        productos.Add(new Producto { Id = 2, Nombre = "Hamburguesa", Precio = 8.00m, Cantidad = 30 });
 
+        // Cargar inventario desde un archivo CSV
+        inventario.CargarInventario("inventario.csv");
+
+        // Agregar productos de ejemplo si el inventario está vacío
+        if (inventario.Productos.Count == 0)
+        {
+            inventario.Productos.Add(new Producto { Id = 1, Nombre = "Pizza", Precio = 10.00m, Cantidad = 50 });
+            inventario.Productos.Add(new Producto { Id = 2, Nombre = "Hamburguesa", Precio = 8.00m, Cantidad = 30 });
+        }
 
         bool continuar = true;
         while (continuar)
@@ -24,14 +29,13 @@ class Program
             Console.WriteLine("4. Salir");
             Console.Write("Seleccione una opción: ");
 
-
             switch (Console.ReadLine())
             {
                 case "1":
                     AgregarCliente(clientes);
                     break;
                 case "2":
-                    CrearFactura(clientes, productos, facturas);
+                    CrearFactura(clientes, inventario.Productos, facturas);
                     break;
                 case "3":
                     ImprimirEstadoMesas(facturas);
@@ -44,8 +48,10 @@ class Program
                     break;
             }
         }
-    }
 
+        // Guardar inventario al salir
+        inventario.GuardarInventario("inventario.csv");
+    }
 
     private static void AgregarCliente(List<Cliente> clientes)
     {
@@ -54,29 +60,24 @@ class Program
         Console.Write("Ingrese la fecha de cumpleaños (dd/mm/yyyy): ");
         DateTime fechaCumpleanos = DateTime.Parse(Console.ReadLine());
 
-
         clientes.Add(new Cliente { Nombre = nombre, FechaCumpleanos = fechaCumpleanos });
         Console.WriteLine("Cliente agregado.");
     }
-
 
     private static void CrearFactura(List<Cliente> clientes, List<Producto> productos, List<Factura> facturas)
     {
         Console.Write("Ingrese el número de la mesa: ");
         int numeroMesa = int.Parse(Console.ReadLine());
 
-
         Console.Write("Seleccione un cliente por su nombre: ");
         string nombreCliente = Console.ReadLine();
         var cliente = clientes.Find(c => c.Nombre == nombreCliente);
-
 
         if (cliente == null)
         {
             Console.WriteLine("Cliente no encontrado.");
             return;
         }
-
 
         var factura = new Factura
         {
@@ -85,7 +86,6 @@ class Program
             Cliente = cliente,
             Fecha = DateTime.Now
         };
-
 
         bool agregarProductos = true;
         while (agregarProductos)
@@ -96,17 +96,14 @@ class Program
                 Console.WriteLine($"- {producto.Nombre} (Precio: {producto.Precio:C}, Cantidad: {producto.Cantidad})");
             }
 
-
             Console.Write("Ingrese el nombre del producto a agregar (o 'salir' para finalizar): ");
             string nombreProducto = Console.ReadLine();
-
 
             if (nombreProducto.ToLower() == "salir")
             {
                 agregarProductos = false;
                 continue;
             }
-
 
             var productoSeleccionado = productos.Find(p => p.Nombre == nombreProducto);
             if (productoSeleccionado == null)
@@ -115,18 +112,15 @@ class Program
                 continue;
             }
 
-
             Console.Write("Ingrese la cantidad: ");
             int cantidad = int.Parse(Console.ReadLine());
             factura.AgregarProducto(productoSeleccionado, cantidad);
             Console.WriteLine("Producto agregado a la factura.");
         }
 
-
         facturas.Add(factura);
         factura.ImprimirFactura();
     }
-
 
     private static void ImprimirEstadoMesas(List<Factura> facturas)
     {
@@ -137,5 +131,3 @@ class Program
         }
     }
 }
-
-
