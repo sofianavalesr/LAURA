@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-
 public class Cliente
 {
     public string Nombre { get; set; }
@@ -10,7 +9,6 @@ public class Cliente
     public bool DescuentoCumpleanosOtorgado { get; set; } = false;
     public List<Factura> Facturas { get; set; } = new List<Factura>();
 
-
     public static List<Cliente> CargarClientes(string rutaArchivo)
     {
         var clientes = new List<Cliente>();
@@ -18,12 +16,10 @@ public class Cliente
         return clientes;
     }
 
-
     public static void GuardarClientes(List<Cliente> clientes, string rutaArchivo)
     {
         // Implementar lógica para guardar clientes en CSV aquí
     }
-
 
     public static void ValidarCumpleanos(Cliente cliente)
     {
@@ -34,7 +30,6 @@ public class Cliente
             Console.WriteLine($"¡Feliz Cumpleaños, {cliente.Nombre}! Has recibido un descuento.");
         }
     }
-
 
     public void AbonarCuenta(decimal monto, Factura factura)
     {
@@ -49,7 +44,6 @@ public class Cliente
             Console.WriteLine("El monto debe ser mayor que cero y menor o igual al límite de crédito.");
         }
     }
-
 
     public void CancelarCuenta(Factura factura)
     {

@@ -1,6 +1,5 @@
 using System.IO;
 
-
 public class IODatos
 {
     public Factura[] CargarFacturasCSV()
@@ -9,11 +8,8 @@ public class IODatos
         return new Factura[0];
     }
 
-
     public void GuardarFacturasCSV(Factura[] facturas)
     {
         // Implementar lógica para guardar facturas en CSV
     }
 }
-
-

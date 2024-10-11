@@ -41,6 +41,11 @@ public class Inventario
                 };
                 Productos.Add(producto);
             }
+            Console.WriteLine("Inventario cargado exitosamente.");
+        }
+        else
+        {
+            Console.WriteLine("Archivo de inventario no encontrado. Se iniciará con inventario vacío.");
         }
     }
 }

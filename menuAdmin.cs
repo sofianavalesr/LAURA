@@ -1,18 +1,17 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
-
 
 public class MenuAdmin
 {
     private readonly Inventario inventario;
     private readonly IODatos ioDatos;
 
-
     public MenuAdmin(Inventario inventario, IODatos ioDatos)
     {
         this.inventario = inventario;
         this.ioDatos = ioDatos;
     }
-
 
     public void VerProductos(int categoria)
     {
@@ -23,12 +22,10 @@ public class MenuAdmin
         }
     }
 
-
     public Producto BuscarProductoPorId(int id)
     {
         return inventario.Productos.FirstOrDefault(p => p.Id == id);
     }
-
 
     public void EditarProductoEnMenu(int idProd, string nuevoNombre, decimal nuevoPrecio)
     {
@@ -45,5 +42,3 @@ public class MenuAdmin
         }
     }
 }
-
-

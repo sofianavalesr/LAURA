@@ -1,10 +1,11 @@
+using System;
+
 public class IU
 {
     public void Logo()
     {
         Console.WriteLine("***** Restaurante *****");
     }
-
 
     public void OpcionesPrograma()
     {
@@ -21,5 +22,3 @@ public class IU
         Console.Write("Seleccione una opción: ");
     }
 }
-
-
