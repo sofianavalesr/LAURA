@@ -5,13 +5,18 @@ class Program
 {
     static void Main(string[] args)
     {
-        List<Cliente> clientes = new List<Cliente>();
+        string rutaInventario = "inventario.csv";
+        string rutaClientes = "clientes.csv";
+
+        // Cargar clientes desde un archivo CSV
+        List<Cliente> clientes = Cliente.CargarClientes(rutaClientes);
+
         Inventario inventario = new Inventario();
         IODatos ioDatos = new IODatos();
         List<Factura> facturas = new List<Factura>();
 
         // Cargar inventario desde un archivo CSV
-        inventario.CargarInventario("inventario.csv");
+        inventario.CargarInventario(rutaInventario);
 
         // Agregar productos de ejemplo si el inventario está vacío
         if (inventario.Productos.Count == 0)
@@ -28,15 +33,20 @@ class Program
             Console.WriteLine("=== Menú Principal ===");
             Console.WriteLine("1. Agregar Cliente");
             Console.WriteLine("2. Crear Factura");
-            Console.WriteLine("3. Imprimir Estado de Mesas");
+            Console.WriteLine("3. Imprimir Cuentas Pendientes por Pagar");
             Console.WriteLine("4. Ver Inventario");
-            Console.WriteLine("5. Salir");
+            Console.WriteLine("5. Abonar Cuenta");
+            Console.WriteLine("6. Cancelar Cuenta");
+            Console.WriteLine("7. Salir");
             Console.Write("Seleccione una opción: ");
 
-            switch (Console.ReadLine())
+            string opcion = Console.ReadLine();
+            Console.WriteLine();
+
+            switch (opcion)
             {
                 case "1":
-                    AgregarCliente(clientes);
+                    AgregarCliente(clientes, rutaClientes);
                     break;
                 case "2":
                     CrearFactura(clientes, inventario.Productos, facturas, inventario);
@@ -48,20 +58,27 @@ class Program
                     inventario.ImprimirEstadoInventario();
                     break;
                 case "5":
+                    AbonarCuenta(clientes, facturas);
+                    break;
+                case "6":
+                    CancelarCuenta(clientes, facturas);
+                    break;
+                case "7":
                     continuar = false;
                     break;
                 default:
-                    Console.WriteLine("Opción no válida. Intente de nuevo.");
+                    Console.WriteLine("Opción no válida. Intente de nuevo.\n");
                     break;
             }
         }
 
-        // Guardar inventario al salir
-        inventario.GuardarInventario("inventario.csv");
-        Console.WriteLine("Inventario guardado.");
+        // Guardar inventario y clientes al salir
+        inventario.GuardarInventario(rutaInventario);
+        Cliente.GuardarClientes(clientes, rutaClientes);
+        Console.WriteLine("Inventario y clientes guardados. ¡Hasta luego!");
     }
 
-    private static void AgregarCliente(List<Cliente> clientes)
+    private static void AgregarCliente(List<Cliente> clientes, string rutaClientes)
     {
         Console.Write("Ingrese el nombre del cliente: ");
         string nombre = Console.ReadLine();
@@ -71,18 +88,21 @@ class Program
         {
             Console.Write("Ingrese la fecha de cumpleaños (dd/mm/yyyy): ");
             string input = Console.ReadLine();
-            if (DateTime.TryParse(input, out fechaCumpleanos))
+            if (DateTime.TryParseExact(input, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaCumpleanos))
             {
                 break;
             }
             else
             {
-                Console.WriteLine("Fecha inválida. Por favor, intente de nuevo.");
+                Console.WriteLine("Fecha inválida. Por favor, ingrese en el formato dd/mm/yyyy.\n");
             }
         }
 
         clientes.Add(new Cliente { Nombre = nombre, FechaCumpleanos = fechaCumpleanos });
         Console.WriteLine("Cliente agregado.\n");
+
+        // Guardar inmediatamente después de agregar
+        Cliente.GuardarClientes(clientes, rutaClientes);
     }
 
     private static void CrearFactura(List<Cliente> clientes, List<Producto> productos, List<Factura> facturas, Inventario inventario)
@@ -90,7 +110,7 @@ class Program
         Console.Write("Ingrese el número de la mesa: ");
         if (!int.TryParse(Console.ReadLine(), out int numeroMesa))
         {
-            Console.WriteLine("Número de mesa inválido.");
+            Console.WriteLine("Número de mesa inválido.\n");
             return;
         }
 
@@ -100,9 +120,12 @@ class Program
 
         if (cliente == null)
         {
-            Console.WriteLine("Cliente no encontrado.");
+            Console.WriteLine("Cliente no encontrado.\n");
             return;
         }
+
+        // Validar si es el cumpleaños del cliente
+        Cliente.ValidarCumpleanos(cliente);
 
         var factura = new Factura(inventario.Productos)
         {
@@ -115,7 +138,7 @@ class Program
         bool agregarProductos = true;
         while (agregarProductos)
         {
-            Console.WriteLine("\nProductos disponibles:");
+            Console.WriteLine("Productos disponibles:");
             foreach (var producto in productos)
             {
                 Console.WriteLine($"- {producto.Nombre} (Precio: {producto.Precio:C}, Cantidad: {producto.Cantidad})");
@@ -124,42 +147,114 @@ class Program
             Console.Write("Ingrese el nombre del producto a agregar (o 'salir' para finalizar): ");
             string nombreProducto = Console.ReadLine();
 
-            if (nombreProducto.ToLower() == "salir")
+            if (nombreProducto.Trim().ToLower() == "salir")
             {
                 agregarProductos = false;
+                Console.WriteLine();
                 continue;
             }
 
             var productoSeleccionado = productos.Find(p => p.Nombre.Equals(nombreProducto, StringComparison.OrdinalIgnoreCase));
             if (productoSeleccionado == null)
             {
-                Console.WriteLine("Producto no encontrado.");
+                Console.WriteLine("Producto no encontrado.\n");
                 continue;
             }
 
             Console.Write("Ingrese la cantidad: ");
             if (!int.TryParse(Console.ReadLine(), out int cantidad) || cantidad <= 0)
             {
-                Console.WriteLine("Cantidad inválida.");
+                Console.WriteLine("Cantidad inválida.\n");
                 continue;
             }
 
             factura.AgregarProducto(productoSeleccionado, cantidad);
-            Console.WriteLine("Producto agregado a la factura.");
+            Console.WriteLine("Producto agregado a la factura.\n");
         }
 
         facturas.Add(factura);
         factura.ImprimirFactura();
-        Console.WriteLine();
     }
 
     private static void ImprimirEstadoMesas(List<Factura> facturas)
+{
+    Console.WriteLine("\n=== Cuentas Pendientes por Pagar ===");
+    bool hayPendientes = false;
+
+    foreach (var factura in facturas)
     {
-        Console.WriteLine("\n=== Estado de Mesas ===");
-        foreach (var factura in facturas)
+        if (factura.Estado == "Cuenta abierta")
         {
-            Console.WriteLine($"Mesa {factura.NumeroMesa} - Estado: {factura.Estado} | Total: {factura.Total:C}");
+            Console.WriteLine($"Factura N°: {factura.NumeroFactura} | Mesa: {factura.NumeroMesa} | Cliente: {factura.Cliente.Nombre} | Total: {factura.Total:C}");
+            hayPendientes = true;
         }
+    }
+
+    if (!hayPendientes)
+    {
+        Console.WriteLine("No hay cuentas pendientes por pagar.\n");
+    }
+    else
+    {
         Console.WriteLine();
+    }
+}
+
+
+        if (!hayPendientes)
+        {
+            Console.WriteLine("No hay cuentas pendientes por pagar.\n");
+        }
+        else
+        {
+            Console.WriteLine();
+        }
+    }
+
+    private static void AbonarCuenta(List<Cliente> clientes, List<Factura> facturas)
+    {
+        Console.Write("Ingrese el número de factura a abonar: ");
+        if (!int.TryParse(Console.ReadLine(), out int numeroFactura))
+        {
+            Console.WriteLine("Número de factura inválido.\n");
+            return;
+        }
+
+        var factura = facturas.Find(f => f.NumeroFactura == numeroFactura && f.Estado != "Cancelada");
+        if (factura == null)
+        {
+            Console.WriteLine("Factura no encontrada o ya cancelada.\n");
+            return;
+        }
+
+        Console.Write("Ingrese el monto a abonar: ");
+        if (!decimal.TryParse(Console.ReadLine(), out decimal monto) || monto <= 0)
+        {
+            Console.WriteLine("Monto inválido.\n");
+            return;
+        }
+
+        var cliente = factura.Cliente;
+        cliente.AbonarCuenta(monto, factura);
+    }
+
+    private static void CancelarCuenta(List<Cliente> clientes, List<Factura> facturas)
+    {
+        Console.Write("Ingrese el número de factura a cancelar: ");
+        if (!int.TryParse(Console.ReadLine(), out int numeroFactura))
+        {
+            Console.WriteLine("Número de factura inválido.\n");
+            return;
+        }
+
+        var factura = facturas.Find(f => f.NumeroFactura == numeroFactura && f.Estado != "Cancelada");
+        if (factura == null)
+        {
+            Console.WriteLine("Factura no encontrada o ya cancelada.\n");
+            return;
+        }
+
+        var cliente = factura.Cliente;
+        cliente.CancelarCuenta(factura);
     }
 }

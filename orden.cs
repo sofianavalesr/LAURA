@@ -22,6 +22,6 @@ public class Orden
         {
             Console.WriteLine($"{item.Producto.Nombre} x {item.Cantidad} = {item.Producto.Precio * item.Cantidad:C}");
         }
-        Console.WriteLine($"Total a pagar: {Total:C}");
+        Console.WriteLine($"Total a pagar: {Total:C}\n");
     }
 }

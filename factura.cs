@@ -46,7 +46,7 @@ public class Factura
         {
             Console.WriteLine($"- {item.Producto.Nombre} x {item.Cantidad} = {item.Producto.Precio * item.Cantidad:C}");
         }
-        Console.WriteLine($"Total: {Total:C}");
+        Console.WriteLine($"Total: {Total:C}\n");
     }
 
     public void ActualizarTotal(decimal monto)

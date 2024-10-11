@@ -4,7 +4,7 @@ public class IU
 {
     public void Logo()
     {
-        Console.WriteLine("***** Restaurante *****");
+        Console.WriteLine("***** Restaurante *****\n");
     }
 
     public void OpcionesPrograma()

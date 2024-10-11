@@ -19,6 +19,16 @@ public class Producto
             {
                 producto.Cantidad -= cantidadVendida;
                 Console.WriteLine($"Inventario actualizado: {producto.Nombre} ahora tiene {producto.Cantidad} unidades.");
+
+                // Emitir alertas si el inventario es 0 o está próximo a acabarse
+                if (producto.Cantidad == 0)
+                {
+                    Console.WriteLine($"¡Alerta! El producto '{producto.Nombre}' se ha agotado.");
+                }
+                else if (producto.Cantidad <= 5) // Umbral para "próximo a acabarse"
+                {
+                    Console.WriteLine($"¡Alerta! El producto '{producto.Nombre}' está próximo a agotarse. Cantidad restante: {producto.Cantidad}");
+                }
             }
             else
             {
