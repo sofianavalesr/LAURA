@@ -238,23 +238,23 @@ class Program
         cliente.AbonarCuenta(monto, factura);
     }
 
-    private static void CancelarCuenta(List<Cliente> clientes, List<Factura> facturas)
+    private static void CancelarCuenta(List<Cliente> clientes, List<Factura> facturas, Inventario inventario)
+   {
+    Console.Write("Ingrese el número de factura a cancelar: ");
+    if (!int.TryParse(Console.ReadLine(), out int numeroFactura))
     {
-        Console.Write("Ingrese el número de factura a cancelar: ");
-        if (!int.TryParse(Console.ReadLine(), out int numeroFactura))
-        {
-            Console.WriteLine("Número de factura inválido.\n");
-            return;
-        }
-
-        var factura = facturas.Find(f => f.NumeroFactura == numeroFactura && f.Estado != "Cancelada");
-        if (factura == null)
-        {
-            Console.WriteLine("Factura no encontrada o ya cancelada.\n");
-            return;
-        }
-
-        var cliente = factura.Cliente;
-        cliente.CancelarCuenta(factura);
+        Console.WriteLine("Número de factura inválido.\n");
+        return;
     }
+
+    var factura = facturas.Find(f => f.NumeroFactura == numeroFactura && f.Estado != "Cancelada");
+    if (factura == null)
+    {
+        Console.WriteLine("Factura no encontrada o ya cancelada.\n");
+        return;
+    }
+
+    factura.CancelarFactura(inventario);
+   }
+
 }
