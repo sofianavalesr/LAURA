@@ -40,7 +40,7 @@ Bienvenido a **Restaurante App**, una aplicación de gestión para restaurantes 
 OpenAI. (2023). ChatGPT (versión del 15 de julio) [Modelo de lenguaje de gran tamaño]. https://chat.openai.com/chat
 
 
-Nuevas Funcionalidades : 
+Algunas Nuevas Funcionalidades : 
 
 ![5](https://github.com/user-attachments/assets/6ed77b9a-45d5-4fe5-acbe-1e16fa785220)
 ![6](https://github.com/user-attachments/assets/8bd2f4ac-6450-4bf4-84b1-403a1fa9f57a)
@@ -48,6 +48,10 @@ Nuevas Funcionalidades :
 ![8](https://github.com/user-attachments/assets/1fe10729-f1bb-4994-88c3-0fea2026c633)
 ![9](https://github.com/user-attachments/assets/245c2da1-29d5-4b21-9957-9c6fab343402)
 ![10](https://github.com/user-attachments/assets/59fd0921-c6b7-4dfc-9ce7-7dba15159114)
+![11](https://github.com/user-attachments/assets/746d6778-8022-4406-a8f1-9f20446507bf)
+![12](https://github.com/user-attachments/assets/02d6f281-bd39-48d6-a6de-75c4051c1c75)
+![13](https://github.com/user-attachments/assets/d36ce2bb-f388-43ad-95e4-7a471a3f7b3e)
+![14](https://github.com/user-attachments/assets/8a615e49-416a-43b9-b50f-4c0edc0e9fcd)
 
 
 
