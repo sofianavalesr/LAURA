@@ -4,7 +4,12 @@ public class IU
 {
     public void Logo()
     {
-        Console.WriteLine("***** Restaurante *****\n");
+        console.Writeline(" ██████╗ ██████╗ ███╗   ███╗██╗     ██╗██╗████████╗ █████╗ ███████╗")
+        console.Writeline("██╔════╝██╔═══██╗████╗ ████║██║     ██║██║╚══██╔══╝██╔══██╗██╔════╝")
+        console.Writeline("██║     ██║   ██║██╔████╔██║██║╔██████║██║   ██║   ███████║███████╗")
+        console.Writeline("██║     ██║   ██║██║╚██╔╝██║██║██══╗██║██║   ██║   ██╔══██║╚════██║")
+        console.Writeline("╚██████╗╚██████╔╝██║ ╚═╝ ██║██║╚██████║██║   ██║   ██║  ██║███████║")
+        console.Writeline(" ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝ ╚═════╝╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝")
     }
 
     public void OpcionesPrograma()

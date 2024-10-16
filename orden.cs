@@ -14,14 +14,24 @@ public class Orden
         Total += item.Producto.Precio * item.Cantidad;
     }
 
-    public void ImprimirTirilla()
+   public void ImprimirTirilla()
+{
+    Console.WriteLine("╔════════════════════════════════════════╗")
+    Console.WriteLine("║         Factura de Venta               ║");
+    Console.WriteLine("╠════════════════════════════════════════╣");
+    Console.WriteLine("║  Producto         | Cantidad |  Precio ║");
+    Console.WriteLine("║  ------------------------------------  ║");
+    
+    foreach (var item in Items)
     {
-        Console.WriteLine($"--- Tirilla de Factura ---");
-        Console.WriteLine($"Mesa: {NumeroMesa} | Cliente: {Cliente.Nombre}");
-        foreach (var item in Items)
-        {
-            Console.WriteLine($"{item.Producto.Nombre} x {item.Cantidad} = {item.Producto.Precio * item.Cantidad:C}");
-        }
-        Console.WriteLine($"Total a pagar: {Total:C}\n");
+        // Ajusta el formato de la línea de producto
+        Console.WriteLine($"║  {item.Producto.Nombre,-16} | {item.Cantidad,8} | {item.Producto.Precio * item.Cantidad,8:C} ║");
     }
+
+    Console.WriteLine("║  ------------------------------------  ║");
+    Console.WriteLine($"║  Total:                    {Total,8:C}      ║");
+    Console.WriteLine("╚════════════════════════════════════════╝");
+    Console.WriteLine("       ¡Gracias por su compra!  ");
+}
+
 }

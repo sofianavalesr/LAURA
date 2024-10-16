@@ -61,17 +61,4 @@ public class Factura
     {
         Total += monto; // Actualiza el total con el monto dado
     }
-
-    public void CancelarFactura(Inventario inventario)
-   {
-    // Restaurar el inventario cuando se cancele la factura
-    foreach (var item in Items)
-    {
-        inventario.RestaurarInventario(item.Producto, item.Cantidad);
-    }
-
-    Estado = "Cancelada";
-    Console.WriteLine($"La factura {NumeroFactura} ha sido cancelada y el inventario restaurado.");
-   }
-
 }

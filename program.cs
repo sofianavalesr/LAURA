@@ -30,15 +30,20 @@ class Program
         bool continuar = true;
         while (continuar)
         {
-            Console.WriteLine("=== Menú Principal ===");
-            Console.WriteLine("1. Agregar Cliente");
-            Console.WriteLine("2. Crear Factura");
-            Console.WriteLine("3. Imprimir Cuentas Pendientes por Pagar");
-            Console.WriteLine("4. Ver Inventario");
-            Console.WriteLine("5. Abonar Cuenta");
-            Console.WriteLine("6. Cancelar Cuenta");
-            Console.WriteLine("7. Salir");
+            
             Console.Write("Seleccione una opción: ");
+            Console.WriteLine("╔════════════════════════════════════╗");
+            Console.WriteLine("║           Menú Principal           ║");
+            Console.WriteLine("╠════════════════════════════════════╣");
+            Console.WriteLine("║        1. Agregar Cliente          ║");
+            Console.WriteLine("║        2. Crear Factura            ║");
+            Console.WriteLine("║        3. Imprimir Cuentas         ║");
+            Console.WriteLine("║        Pendientes por Pagar        ║");
+            Console.WriteLine("║        4. Ver Inventario           ║");
+            Console.WriteLine("║        5. Abonar Cuenta            ║");
+            Console.WriteLine("║        6. Cancelar Cuenta          ║");
+            Console.WriteLine("║        7. Salir                    ║");
+            Console.Writeline("╚════════════════════════════════════╝ ");
 
             string opcion = Console.ReadLine();
             Console.WriteLine();
@@ -177,7 +182,7 @@ class Program
     }
 
     private static void ImprimirEstadoMesas(List<Factura> facturas)
-   {
+{
     Console.WriteLine("\n=== Cuentas Pendientes por Pagar ===");
     bool hayPendientes = false;
 
@@ -198,7 +203,7 @@ class Program
     {
         Console.WriteLine();
     }
-   }
+}
 
 
         if (!hayPendientes)
@@ -238,23 +243,23 @@ class Program
         cliente.AbonarCuenta(monto, factura);
     }
 
-    private static void CancelarCuenta(List<Cliente> clientes, List<Factura> facturas, Inventario inventario)
-   {
-    Console.Write("Ingrese el número de factura a cancelar: ");
-    if (!int.TryParse(Console.ReadLine(), out int numeroFactura))
+    private static void CancelarCuenta(List<Cliente> clientes, List<Factura> facturas)
     {
-        Console.WriteLine("Número de factura inválido.\n");
-        return;
+        Console.Write("Ingrese el número de factura a cancelar: ");
+        if (!int.TryParse(Console.ReadLine(), out int numeroFactura))
+        {
+            Console.WriteLine("Número de factura inválido.\n");
+            return;
+        }
+
+        var factura = facturas.Find(f => f.NumeroFactura == numeroFactura && f.Estado != "Cancelada");
+        if (factura == null)
+        {
+            Console.WriteLine("Factura no encontrada o ya cancelada.\n");
+            return;
+        }
+
+        var cliente = factura.Cliente;
+        cliente.CancelarCuenta(factura);
     }
-
-    var factura = facturas.Find(f => f.NumeroFactura == numeroFactura && f.Estado != "Cancelada");
-    if (factura == null)
-    {
-        Console.WriteLine("Factura no encontrada o ya cancelada.\n");
-        return;
-    }
-
-    factura.CancelarFactura(inventario);
-   }
-
 }
