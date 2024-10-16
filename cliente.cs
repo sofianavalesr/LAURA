@@ -34,7 +34,7 @@ public class Cliente
                         };
                         clientes.Add(cliente);
                     }
-                    catch (Exception ex)
+                    catch (Exception ex) 
                     {
                         Console.WriteLine($"Error al cargar el cliente en la línea {i + 1}: {ex.Message}");
                     }
