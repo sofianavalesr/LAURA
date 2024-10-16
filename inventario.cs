@@ -12,7 +12,7 @@ public class Inventario
         Producto.ImprimirEstadoInventario(Productos);
     }
 
-    // Método para guardar el inventario en un archivo CSV
+    // Método para guardar el inventario en un archivo CSV 
     public void GuardarInventario(string rutaArchivo)
     {
         try
