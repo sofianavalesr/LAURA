@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main(string[] args) 
     {
         string rutaInventario = "inventario.csv";  
         string rutaClientes = "clientes.csv"; 
