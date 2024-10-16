@@ -17,7 +17,7 @@ public class Inventario
     {
         try
         {
-            using (StreamWriter writer = new StreamWriter(rutaArchivo)) //Streamwriter
+            using (StreamWriter writer = new StreamWriter(rutaArchivo)) //Streamwriter, utiliza un búfer interno para mejorar la eficiencia de escritura.
             {
                 writer.WriteLine("Id,Nombre,Precio,Cantidad"); // Encabezados
                 foreach (var producto in Productos)
