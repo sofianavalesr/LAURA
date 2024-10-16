@@ -17,7 +17,7 @@ public class Inventario
     {
         try
         {
-            using (StreamWriter writer = new StreamWriter(rutaArchivo))
+            using (StreamWriter writer = new StreamWriter(rutaArchivo)) //Stream
             {
                 writer.WriteLine("Id,Nombre,Precio,Cantidad"); // Encabezados
                 foreach (var producto in Productos)
