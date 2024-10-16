@@ -177,7 +177,7 @@ class Program
     }
 
     private static void ImprimirEstadoMesas(List<Factura> facturas)
-{
+   {
     Console.WriteLine("\n=== Cuentas Pendientes por Pagar ===");
     bool hayPendientes = false;
 
@@ -198,7 +198,7 @@ class Program
     {
         Console.WriteLine();
     }
-}
+   }
 
 
         if (!hayPendientes)

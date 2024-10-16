@@ -12,14 +12,13 @@ public class Inventario
         Producto.ImprimirEstadoInventario(Productos);
     }
 
-    // Método para guardar el inventario en un archivo CSV
     public void GuardarInventario(string rutaArchivo)
     {
         try
         {
             using (StreamWriter writer = new StreamWriter(rutaArchivo))
             {
-                writer.WriteLine("Id,Nombre,Precio,Cantidad"); // Encabezados
+                writer.WriteLine("Id,Nombre,Precio,Cantidad");
                 foreach (var producto in Productos)
                 {
                     writer.WriteLine($"{producto.Id},{producto.Nombre},{producto.Precio.ToString(CultureInfo.InvariantCulture)},{producto.Cantidad}");
@@ -33,7 +32,6 @@ public class Inventario
         }
     }
 
-    // Método para cargar el inventario desde un archivo CSV
     public void CargarInventario(string rutaArchivo)
     {
         if (File.Exists(rutaArchivo))
@@ -72,35 +70,41 @@ public class Inventario
             Console.WriteLine("Archivo de inventario no encontrado. Se iniciará con inventario vacío.\n");
         }
     }
-    public static void ActualizarInventario(List<Producto> productos, int idProducto, int cantidadVendida)
-{
-    var producto = productos.FirstOrDefault(p => p.Id == idProducto);
-    if (producto != null)
-    {
-        if (producto.Cantidad >= cantidadVendida)
-        {
-            producto.Cantidad -= cantidadVendida;
-            Console.WriteLine($"Inventario actualizado: {producto.Nombre} ahora tiene {producto.Cantidad} unidades.");
 
-            // Emitir alertas si el inventario es 0 o está próximo a acabarse
-            if (producto.Cantidad == 0)
-            {
-                Console.WriteLine($"¡Alerta! El producto '{producto.Nombre}' se ha agotado.");
-            }
-            else if (producto.Cantidad <= 5) // Umbral para "próximo a acabarse"
-            {
-                Console.WriteLine($"¡Alerta! El producto '{producto.Nombre}' está próximo a agotarse. Cantidad restante: {producto.Cantidad}");
-            }
-        }
-        else
+    // Nueva función para actualizar el inventario
+    public void ActualizarInventario(Producto producto, int cantidadVendida)
+    {
+        if (producto != null)
         {
-            Console.WriteLine($"No hay suficiente stock de {producto.Nombre}. Disponibles: {producto.Cantidad}");
+            if (producto.Cantidad >= cantidadVendida)
+            {
+                producto.Cantidad -= cantidadVendida;
+                Console.WriteLine($"Inventario actualizado: {producto.Nombre} ahora tiene {producto.Cantidad} unidades.");
+
+                if (producto.Cantidad == 0)
+                {
+                    Console.WriteLine($"¡Alerta! El producto '{producto.Nombre}' se ha agotado.");
+                }
+                else if (producto.Cantidad <= 5) // Umbral para "próximo a acabarse"
+                {
+                    Console.WriteLine($"¡Alerta! El producto '{producto.Nombre}' está próximo a agotarse. Cantidad restante: {producto.Cantidad}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"No hay suficiente stock de {producto.Nombre}. Disponibles: {producto.Cantidad}");
+            }
         }
     }
-    else
+
+    // Nueva función para restaurar inventario en caso de cancelación de factura o devolución de productos
+    public void RestaurarInventario(Producto producto, int cantidadDevuelta)
     {
-        Console.WriteLine("Producto no encontrado en el inventario.");
+        if (producto != null)
+        {
+            producto.Cantidad += cantidadDevuelta;
+            Console.WriteLine($"Inventario restaurado: {producto.Nombre} ahora tiene {producto.Cantidad} unidades.");
+        }
     }
 }
 
-}

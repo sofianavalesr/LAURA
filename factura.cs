@@ -19,21 +19,25 @@ public class Factura
         if (cantidad > 0 && producto.Cantidad >= cantidad)
         {
             Items.Add(new ItemFactura { Producto = producto, Cantidad = cantidad });
-
-            // Actualizar el inventario automáticamente
-            inventario.ActualizarInventario(producto.Id, cantidad);
-
-            // Recalcular los totales
+            Producto.ActualizarInventario(new List<Producto> { producto }, producto.Id, cantidad);
             CalcularTotales();
-
-            // Verificar el estado del inventario después de la venta
-            inventario.RevisarInventario();
-        }
-        else
-        {
-            Console.WriteLine($"Error: No hay suficiente stock de {producto.Nombre}. Solo hay {producto.Cantidad} unidades disponibles.");
         }
     }
+    public void AgregarProducto(Producto producto, int cantidad, Inventario inventario)
+{
+    if (cantidad > 0 && producto.Cantidad >= cantidad)
+    {
+        Items.Add(new ItemFactura { Producto = producto, Cantidad = cantidad });
+        CalcularTotales();
+
+        // Actualizar inventario después de agregar el producto a la factura
+        inventario.ActualizarInventario(producto, cantidad);
+    }
+    else
+    {
+        Console.WriteLine("No hay suficiente stock o la cantidad no es válida.");
+    }
+}
 
 
     public void CalcularTotales()
@@ -53,5 +57,8 @@ public class Factura
     }
 
 
-
+    public void ActualizarTotal(decimal monto)
+    {
+        Total += monto; // Actualiza el total con el monto dado
+    }
 }
