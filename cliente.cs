@@ -20,7 +20,7 @@ public class Cliente
             var lineas = File.ReadAllLines(rutaArchivo);
             for (int i = 1; i < lineas.Length; i++) // Saltar el encabezado
             {
-                var columnas = lineas[i].Split(',');
+                var columnas = lineas[i].Split(','); //separar esa columna por 
                 if (columnas.Length >= 4)
                 {
                     try
